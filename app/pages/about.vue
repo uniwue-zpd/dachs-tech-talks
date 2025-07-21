@@ -57,6 +57,6 @@ const faqItems = [
         </Accordion>
       </div>
     </section>
-    <AboutCallToAction />
+    <CallToAction />
   </div>
 </template>

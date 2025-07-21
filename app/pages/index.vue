@@ -3,7 +3,7 @@
     <LandingPageHero />
     <LandingPageUpcomingTalks />
     <LandingPageCategories />
-    <LandingPageCallToAction />
+    <CallToAction />
     <TalkOverview />
     <LandingPageProposalsOverview />
   </main>
