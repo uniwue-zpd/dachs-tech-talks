@@ -10,7 +10,6 @@ export interface Talk {
     category: string;
     speaker: string;
     tags: string[];
-    image?: string;
 }
 
 export interface Category {

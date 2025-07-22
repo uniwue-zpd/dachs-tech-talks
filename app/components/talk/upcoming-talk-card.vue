@@ -79,14 +79,6 @@ const formattedTime = computed(() => {
             by <NuxtLink :to="`/talks?speakers=${talk.speaker}`" class="hover:underline">{{ talk.speaker }}</NuxtLink>
           </p>
         </div>
-
-        <div v-if="talk.image" class="flex-shrink-0">
-          <img
-              :src="talk.image"
-              :alt="talk.title"
-              class="w-20 h-20 rounded-xl object-cover border-2 border-white/30"
-          />
-        </div>
       </div>
 
       <div class="flex items-end justify-between gap-4">

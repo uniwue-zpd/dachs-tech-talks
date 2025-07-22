@@ -75,13 +75,6 @@ const authorInitial = computed(() => {
             </Badge>
           </NuxtLink>
         </div>
-
-        <img
-            v-if="data.image"
-            :src="data.image"
-            :alt="data.title"
-            class="mb-8 mt-4 aspect-video w-full rounded-lg border object-cover"
-        >
       </div>
     </div>
 

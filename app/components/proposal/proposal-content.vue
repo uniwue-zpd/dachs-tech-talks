@@ -33,18 +33,11 @@ const props = defineProps({
 
         <div v-if="data.tags && data.tags.length" class="mt-2 flex flex-wrap justify-center gap-2">
           <NuxtLink v-for="tag in data.tags" :key="tag" :to="`/proposals?tags=${tag.toLowerCase()}`">
-            <Badge variant="primary" class="transition-transform hover:scale-105">
+            <Badge variant="default" class="transition-transform hover:scale-105">
               #{{ tag }}
             </Badge>
           </NuxtLink>
         </div>
-
-        <img
-            v-if="data.image"
-            :src="data.image"
-            :alt="data.title"
-            class="mb-8 mt-4 aspect-video w-full rounded-lg border object-cover"
-        >
       </div>
     </div>
 

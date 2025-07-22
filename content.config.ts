@@ -10,7 +10,6 @@ export default defineContentConfig({
                     speaker: z.string(),
                     category: z.string(),
                     tags: z.array(z.string()),
-                    image: z.string().optional(),
                     date: z.date(),
                     time: z.string().optional(),
                     location: z.string().optional(),
@@ -22,7 +21,6 @@ export default defineContentConfig({
             schema: z.object({
                 title: z.string(),
                 tags: z.array(z.string()),
-                proposal: z.string(),
             })
         })
     }
