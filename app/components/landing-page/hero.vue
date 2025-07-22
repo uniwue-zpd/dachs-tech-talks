@@ -27,7 +27,7 @@
             :words="categories"
             :duration="3000"
             class="text-2xl font-bold"
-        /></ClientOnly><br />from and for the research group for <a target="_blank" class="hover:underline" href="https://www.uni-wuerzburg.de/zpd/forschungsstelle-dachs/">Digital Applications in Humanities Studies</a>
+        /></ClientOnly><br />from and for the research group for <br /><a target="_blank" class="hover:underline" href="https://www.uni-wuerzburg.de/zpd/forschungsstelle-dachs/">Digital Applications in Humanities Studies</a>
         </p>
       </div>
 
