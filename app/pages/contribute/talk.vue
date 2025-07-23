@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Github } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 
 const talkTemplate = `---
@@ -66,7 +65,7 @@ Your talk description and content starts here...
         <div class="text-center my-8">
           <Button size="lg" as-child>
             <a href="https://github.com/uniwue-zpd/dachs-tech-talks" target="_blank" rel="noopener noreferrer">
-              <Github class="mr-2 h-5 w-5" />
+              <Icon name="carbon:logo-github" width="5" height="5" />
               Go to GitHub Repository
             </a>
           </Button>
