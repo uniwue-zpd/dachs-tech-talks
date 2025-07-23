@@ -67,7 +67,7 @@ Your proposal description and content starts here...
         <p>
           Copy the entire block below into your new <code>.md</code> file.
         </p>
-        <pre class="bg-muted rounded-lg p-4 text-sm whitespace-pre-wrap"><code>{{ proposalTemplate }}</code></pre>
+        <pre class="bg-accent-foreground text-primary-foreground rounded-lg p-4 text-sm whitespace-pre-wrap"><code>{{ proposalTemplate }}</code></pre>
       </div>
     </div>
   </div>
