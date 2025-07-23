@@ -12,11 +12,12 @@ time: "10:30"
 location: "00.003"
 ---
 
-This talk provides a high-level overview of Nuxt, the intuitive meta-framework for building server-rendered Vue.js applications. We will cover the core concepts that make Nuxt a powerful choice for modern web development, especially in the context of our projects at DACHS.
+This talk provides a high-level overview of Nuxt, the intuitive meta-framework for building server-rendered Vue.js applications. 
+We will cover the core concepts that make Nuxt a powerful choice for modern web development, especially in the context of our projects at DACHS.
 
 **Key Links:**
 - **Official Website:** [nuxt.com](https://nuxt.com/)
-- **Nuxt Content Module:** [content.nuxt.com](https://content.nuxt.com/)
+- **Nuxt Modules:** [nuxt.com/modules](https://nuxt.com/modules)
 
 ### Why Nuxt? Vue vs. Nuxt
 
