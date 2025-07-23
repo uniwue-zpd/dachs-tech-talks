@@ -32,6 +32,9 @@ function formatDate(dateString: string) {
         <Badge v-if="categoryDetails" :class="cn('transition-colors', categoryDetails.class)">
           {{ categoryDetails.name }}
         </Badge>
+        <Badge v-if="talk.deep_dive" variant="outline" class="ml-2">
+          Deep Dive
+        </Badge>
       </div>
 
       <div class="flex-grow">

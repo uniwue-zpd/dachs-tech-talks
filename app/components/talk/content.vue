@@ -43,6 +43,9 @@ const authorInitial = computed(() => {
           <Badge :class="cn('text-sm font-semibold transition-transform hover:scale-105', categoryDetails.class)">
             {{ categoryDetails.name }}
           </Badge>
+          <Badge v-if="data.deep_dive" variant="outline" class="text-sm font-semibold transition-transform hover:scale-105">
+            Deep Dive
+          </Badge>
         </NuxtLink>
 
         <h1 class="max-w-3xl text-pretty text-4xl font-semibold md:text-6xl">

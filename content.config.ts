@@ -13,6 +13,7 @@ export default defineContentConfig({
                     date: z.date(),
                     time: z.string().optional(),
                     location: z.string().optional(),
+                    deep_dive: z.boolean().optional(),
                 })
         }),
         proposals: defineCollection({
