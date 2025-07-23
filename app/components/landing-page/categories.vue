@@ -43,7 +43,7 @@ import { CATEGORIES } from '@/lib/talks'
 
 const categoryPageData = {
   'library-spotlight': { description: "Discover a cool, niche, or weirdly useful library that can change how you approach a problem.", spanClass: "lg:col-span-2" },
-  'framework-deep-dive': { description: "Go beyond the basics and explore what's new and powerful in frameworks like Vue, React, Nuxt, Spring, and more.", spanClass: "lg:col-span-3" },
+  'framework-spotlight': { description: "Go beyond the basics and explore what's new and powerful in frameworks like Vue, React, Nuxt, Spring, and more.", spanClass: "lg:col-span-3" },
   'dev-tooling': { description: "Boost your productivity with clever tips and tricks for Git, Docker, IDE plugins, and other essential dev tools.", spanClass: "lg:col-span-3" },
   'recent-bugs-fixes': { description: "Listen to a developer's war story—a fascinating tale of debugging a tricky issue and the clever fix that saved the day.", spanClass: "lg:col-span-2" },
   'release-radar': { description: "Stay up-to-date with the latest features and changes in Node.js, TypeScript, Python, and other core technologies.", spanClass: "lg:col-span-2" },

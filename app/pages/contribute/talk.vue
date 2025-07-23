@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 const talkTemplate = `---
 title: "Your Talk Title"
 speaker: "Your Full Name"
-speakerGithub: "YourGitHubUsername" # Optional
 category: "framework-deep-dive" # Choose one: library-spotlight, framework-deep-dive, dev-tooling, recent-bugs-fixes, release-radar, behind-the-scenes, architecture-bits, misc
 tags:
   - RelevantTag
@@ -13,7 +12,6 @@ date: ${new Date().toISOString().split('T')[0]} # e.g., 2025-10-27
 # Optional fields below
 time: "10:30" # e.g., "14:00" (24-hour UTC format)
 location: "00.003" # e.g., "01.002"
-image: "https://example.com/image.png"
 ---
 
 ## Talk Abstract

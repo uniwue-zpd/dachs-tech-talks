@@ -15,6 +15,7 @@ import type {Talk} from '@/lib/talks';
 
 const categories = getCategoryNames()
 const timeOptions = { all: 'All Time', past: 'Past Talks', future: 'Future Talks' }
+const deepDiveOptions = { all: 'All Talks', 'deep-dive': 'Deep Dives' }
 
 const route = useRoute()
 const router = useRouter()
@@ -33,12 +34,16 @@ const getCategoryFromUrl = () => {
   const foundCategory = getCategoryBySlug(catSlugFromUrl)
   return foundCategory ? foundCategory.name : 'All Talks'
 }
+const getDeepDiveFromUrl = (): 'all' | 'deep-dive' => {
+  return route.query.deep_dive === 'true' ? 'deep-dive' : 'all'
+}
 
 const selectedTime = ref<string>(getTimeFromUrl())
 const selectedCategory = ref<string>(getCategoryFromUrl())
 const selectedTags = ref<string[]>(getFromUrl('tags'))
 const selectedSpeakers = ref<string[]>(getFromUrl('speakers'))
 const searchTerm = ref('')
+const selectedDeepDive = ref<'all' | 'deep-dive'>(getDeepDiveFromUrl())
 
 const uniqueSpeakers = computed(() => {
   if (!allTalks.value) return new Map<string, number>()
@@ -82,17 +87,20 @@ const filteredTalks = computed(() => {
 
     const speakerMatch = selectedSpeakers.value.length === 0 || selectedSpeakers.value.includes(talk.speaker)
 
-    return timeMatch && categoryMatch && searchMatch && tagMatch && speakerMatch
+    const deepDiveMatch = selectedDeepDive.value === 'all' || (selectedDeepDive.value === 'deep-dive' && talk.deep_dive)
+
+    return timeMatch && categoryMatch && searchMatch && tagMatch && speakerMatch && deepDiveMatch
   })
 })
 
-watch([selectedTime, selectedCategory, selectedTags, selectedSpeakers], ([time, categoryName, tags, speakers]) => {
+watch([selectedTime, selectedCategory, selectedTags, selectedSpeakers, selectedDeepDive], ([time, categoryName, tags, speakers, deepDive]) => {
   const categoryDetails = getCategoryByName(categoryName)
   const query: Record<string, string | undefined> = {
     time: time === 'all' ? undefined : time,
     category: categoryName === 'All Talks' ? undefined : categoryDetails?.slug,
     tags: tags.length > 0 ? tags.join(',') : undefined,
     speakers: speakers.length > 0 ? speakers.join(',') : undefined,
+    deep_dive: deepDive === 'deep-dive' ? 'true' : undefined,
   }
   Object.keys(query).forEach(key => query[key] === undefined && delete query[key])
   router.push({ query })
@@ -128,6 +136,13 @@ function toggleSelection(array: string[], item: string) {
               <SelectTrigger class="w-full md:w-[150px]"><SelectValue placeholder="Select time" /></SelectTrigger>
               <SelectContent><SelectGroup>
                 <SelectItem v-for="(label, value) in timeOptions" :key="value" :value="value">{{ label }}</SelectItem>
+              </SelectGroup></SelectContent>
+            </Select>
+
+            <Select v-model="selectedDeepDive">
+              <SelectTrigger class="w-full md:w-[150px]"><SelectValue placeholder="Talk Type" /></SelectTrigger>
+              <SelectContent><SelectGroup>
+                <SelectItem v-for="(label, value) in deepDiveOptions" :key="value" :value="value">{{ label }}</SelectItem>
               </SelectGroup></SelectContent>
             </Select>
 
