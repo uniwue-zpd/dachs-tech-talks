@@ -1,10 +1,11 @@
 <template>
-  <div class="antialiased bg-zinc-100 dark:bg-zinc-900">
-    <Transition name="fade" mode="out-in">
-      <div v-if="!isAppReady" key="loader" class="">
-        <LayoutLoader />
-      </div>
-      <div v-else key="content" class="px-4">
+  <Transition name="fade" mode="out-in">
+    <div v-if="!isAppReady" key="loader">
+      <LayoutLoader />
+    </div>
+
+    <div v-else key="content" class="antialiased bg-zinc-100 dark:bg-zinc-900">
+      <div class="px-4">
         <div class="container-fluid md:max-w-6xl mx-auto min-h-screen">
           <LayoutNavbar />
           <div class="pt-12" vaul-drawer-wrapper>
@@ -14,17 +15,15 @@
         <LayoutFooter />
         <ScrollToTop />
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
 const isAppReady = useState('isAppReady', () => false)
 
 onMounted(() => {
-  nextTick(() => {
-    isAppReady.value = true
-  })
+  isAppReady.value = true
 })
 
 useHead({
