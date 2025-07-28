@@ -1,7 +1,7 @@
 <template>
   <Transition name="fade" mode="out-in">
     <div v-if="!isAppReady" key="loader">
-      <LayoutLoader />
+      <LayoutSplashscreen />
     </div>
 
     <div v-else key="content" class="antialiased bg-zinc-100 dark:bg-zinc-900">
