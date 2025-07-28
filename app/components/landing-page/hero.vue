@@ -1,6 +1,6 @@
 <template>
   <div
-      class="relative py-20 md:px-0 px-2 overflow-hidden"
+      class="relative pt-10 md:pt-20 pb-20 md:px-0 px-2 overflow-hidden"
   >
     <div
         class="relative container md:max-w-6xl mx-auto bg-zinc-200 bg-[radial-gradient(ellipse_90%_90%_at_90%_-10%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_90%_90%_at_90%_-10%,rgba(120,119,198,0.3),rgba(255,255,255,0))] overflow-hidden rounded-3xl pt-12 pb-30 lg:pt-36 px-10"
