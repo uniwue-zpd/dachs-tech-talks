@@ -10,7 +10,7 @@ tags:
   - AnotherTag
 date: ${new Date().toISOString().split('T')[0]} # e.g., 2025-10-27
 # Optional fields below
-time: "10:30" # e.g., "14:00" (24-hour UTC format)
+time: "10:30" # e.g., "14:00" (24-hour UTC+2 format)
 location: "00.003" # e.g., "01.002"
 ---
 
