@@ -1,10 +1,10 @@
   <template>
   <main>
     <LandingPageHero />
-    <LandingPageUpcomingTalks />
-    <LandingPageCategories />
-    <CallToAction />
-    <TalkOverview />
-    <LandingPageProposalsOverview />
+    <LazyLandingPageUpcomingTalks />
+    <LazyLandingPageCategories />
+    <LazyCallToAction />
+    <LazyTalkOverview />
+    <LazyLandingPageProposalsOverview />
   </main>
 </template>
