@@ -46,7 +46,7 @@ const formattedTime = computed(() => {
     minute: '2-digit',
     hour12: false,
     timeZone: 'UTC'
-  }).format(fullDate.value) + ' UTC'
+  }).format(fullDate.value) + ' UTC+2'
 })
 </script>
 
