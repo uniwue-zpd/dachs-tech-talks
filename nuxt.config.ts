@@ -10,8 +10,7 @@ export default defineNuxtConfig({
     },
   },
 
-  ssr: true,
-  isr: true,
+  ssr: false,
 
   modules: [
     '@nuxt/content',
