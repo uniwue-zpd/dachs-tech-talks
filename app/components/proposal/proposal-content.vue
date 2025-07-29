@@ -1,16 +1,45 @@
 <script setup lang="ts">
 import { Badge } from '~/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-vue-next'
+import { ArrowLeft, ThumbsUp } from 'lucide-vue-next'
 import type { Proposal } from '@/lib/proposals'
+import { useUpvotes } from '~/composables/useUpvotes'
+import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   data: {
     type: Object as () => Proposal,
     required: true,
   },
 })
 
+const { loggedIn, openInPopup } = useUserSession()
+const { hasUpvoted, addUpvote } = useUpvotes()
+const { data: votes } = await useFetch('/api/proposals/votes', { key: 'proposal-votes' })
+
+const slug = props.data.path.split('/').pop() || ''
+const localVotes = ref(votes.value?.[slug] || 0)
+const isVoting = ref(false)
+
+const handleUpvote = async () => {
+  if (isVoting.value || !loggedIn.value || hasUpvoted(props.data.path)) return
+
+  isVoting.value = true
+  try {
+    const result = await $fetch(`/api/proposals/${slug}/vote`, {
+      method: 'POST',
+    })
+
+    if (result && typeof result.votes === 'number') {
+      localVotes.value = result.votes
+      addUpvote(props.data.path)
+    }
+  } catch (error) {
+    console.error('Failed to upvote:', error)
+  } finally {
+    isVoting.value = false
+  }
+}
 </script>
 
 <template>
@@ -46,6 +75,30 @@ defineProps({
           :value="data.body"
           class="prose dark:prose-invert mx-auto max-w-3xl"
       />
+    </div>
+
+    <div class="container max-w-3xl mx-auto mt-12 text-center">
+      <div class="flex items-center justify-center gap-4">
+        <div class="flex items-center gap-2 text-lg">
+          <ThumbsUp class="h-6 w-6" :class="{'text-primary fill-primary': hasUpvoted(data.path) }" />
+          <span class="font-semibold">{{ localVotes }}</span>
+        </div>
+        <Button
+            v-if="!loggedIn"
+            variant="outline"
+            @click="openInPopup('/auth/github')"
+        >
+          Login with GitHub to Vote
+        </Button>
+        <Button
+            v-else
+            :disabled="isVoting || hasUpvoted(data.path)"
+            @click="handleUpvote"
+        >
+          <ThumbsUp class="mr-2 h-4 w-4" />
+          {{ hasUpvoted(data.path) ? 'Upvoted' : 'Upvote' }}
+        </Button>
+      </div>
     </div>
   </section>
 </template>

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type {PropType} from 'vue';
-import { Badge } from '@/components/ui/badge';
-import { useUpvotes } from '~/composables/useUpvotes';
+import type { PropType } from 'vue'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ThumbsUp } from 'lucide-vue-next'
+import { useUpvotes } from '~/composables/useUpvotes'
 
 interface Proposal {
-  path: string;
-  title: string;
-  description: string;
-  tags: string[];
-  votes: number;
+  path: string
+  title: string
+  description: string
+  tags: string[]
+  votes: number
 }
 
 const props = defineProps({
@@ -16,38 +18,38 @@ const props = defineProps({
     type: Object as PropType<Proposal>,
     required: true,
   },
-});
+})
 
-const { hasUpvoted, addUpvote } = useUpvotes();
+const { loggedIn, openInPopup } = useUserSession()
+const { hasUpvoted, addUpvote } = useUpvotes()
 
-const localVotes = ref(props.proposal.votes || 0);
-const isVoting = ref(false);
+const localVotes = ref(props.proposal.votes || 0)
+const isVoting = ref(false)
 
 const handleUpvote = async () => {
-  if (isVoting.value || hasUpvoted(props.proposal.path)) return;
+  if (isVoting.value || !loggedIn.value || hasUpvoted(props.proposal.path)) return
 
-  isVoting.value = true;
-
+  isVoting.value = true
   try {
-    const slug = props.proposal.path.split('/').pop();
+    const slug = props.proposal.path.split('/').pop()
     if (!slug) {
-      throw new Error(`Could not derive slug from path: ${props.proposal.path}`);
+      throw new Error(`Could not derive slug from path: ${props.proposal.path}`)
     }
 
     const result = await $fetch(`/api/proposals/${slug}/vote`, {
       method: 'POST',
-    });
+    })
 
     if (result && typeof result.votes === 'number') {
-      localVotes.value = result.votes;
-      addUpvote(props.proposal.path);
+      localVotes.value = result.votes
+      addUpvote(props.proposal.path)
     }
   } catch (error) {
-    console.error("Failed to upvote:", error);
+    console.error('Failed to upvote:', error)
   } finally {
-    isVoting.value = false;
+    isVoting.value = false
   }
-};
+}
 </script>
 
 <template>
@@ -69,19 +71,30 @@ const handleUpvote = async () => {
       </div>
       <div v-else class="flex-grow"/>
 
-<!--      <Button
-          variant="ghost"
-          size="sm"
-          class="flex items-center gap-2"
-          :disabled="isVoting || hasUpvoted(proposal.path)"
-          @click="handleUpvote"
-      >
-        <ThumbsUp
-            class="h-4 w-4 transition-colors"
-            :class="{ 'text-primary fill-primary': hasUpvoted(proposal.path) }"
-        />
-        <span class="font-semibold">{{ localVotes }}</span>
-      </Button>-->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1 text-sm">
+          <ThumbsUp class="h-4 w-4" :class="{'text-primary fill-primary': hasUpvoted(proposal.path) }" />
+          <span class="font-semibold">{{ localVotes }}</span>
+        </div>
+        <Button
+            v-if="!loggedIn"
+            variant="outline"
+            size="sm"
+            @click="openInPopup('/auth/github')"
+        >
+          Login to Vote
+        </Button>
+        <Button
+            v-else
+            variant="ghost"
+            size="sm"
+            class="flex items-center gap-2"
+            :disabled="isVoting || hasUpvoted(proposal.path)"
+            @click="handleUpvote"
+        >
+          {{ hasUpvoted(proposal.path) ? 'Upvoted' : 'Upvote' }}
+        </Button>
+      </div>
     </div>
   </div>
 </template>

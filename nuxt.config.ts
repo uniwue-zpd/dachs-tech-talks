@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     'motion-v/nuxt',
     '@nuxtjs/color-mode',
+    'nuxt-auth-utils',
   ],
 
   css: ['./app/assets/css/tailwind.css'],

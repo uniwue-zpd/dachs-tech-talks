@@ -1,12 +1,29 @@
+import { ref, onMounted } from 'vue'
+
 const UPVOTED_PROPOSALS_KEY = 'dachs_upvoted_proposals'
+const USER_ORGS_KEY = 'dachs_user_orgs'
 
 export function useUpvotes() {
     const upvotedSlugs = ref<Set<string>>(new Set())
+    const userOrgs = ref<string[]>([])
+    const isOrgMember = ref(false)
+    const { loggedIn } = useUserSession()
 
-    onMounted(() => {
+    onMounted(async () => {
         const stored = localStorage.getItem(UPVOTED_PROPOSALS_KEY)
         if (stored) {
             upvotedSlugs.value = new Set(JSON.parse(stored))
+        }
+
+        if (loggedIn.value) {
+            const storedOrgs = sessionStorage.getItem(USER_ORGS_KEY)
+            if (storedOrgs) {
+                userOrgs.value = JSON.parse(storedOrgs)
+            } else {
+                userOrgs.value = await $fetch('/api/auth/github/orgs')
+                sessionStorage.setItem(USER_ORGS_KEY, JSON.stringify(userOrgs.value))
+            }
+            isOrgMember.value = userOrgs.value.includes('uniwue-zpd')
         }
     })
 
@@ -22,5 +39,6 @@ export function useUpvotes() {
     return {
         hasUpvoted,
         addUpvote,
+        isOrgMember,
     }
 }
