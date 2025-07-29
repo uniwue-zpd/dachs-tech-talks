@@ -8,7 +8,6 @@ tags:
   - Framework
   - Frontend
 date: "2025-07-29"
-time: "10:30"
 location: "00.003"
 ---
 
@@ -34,6 +33,8 @@ It abstracts much of the boilerplate needed in a standard Vue setup and provides
 | API integration | External backend      | Built-in server API with Nitro |
 | Code structure  | Freestyle             | Convention over configuration  |
 | TypeScript      | Optional              | First-class support            |
+
+> Many features in Nuxt — like SSR, auto-imports, or server APIs — can be added to Vue manually using the unjs ecosystem (e.g., Nitro, H3), but Nuxt packages them into a cohesive and ready-to-use framework.
 
 ---
 
@@ -151,6 +152,19 @@ This will:
 
 ---
 
+## ⚖️ When Not to Use Nuxt
+
+While Nuxt provides a lot of powerful defaults, it’s not the best fit for every project. Consider using plain Vue 3 (with or without the unjs ecosystem) when:
+
+* You're building a **library**, design system, or highly reusable component.
+* You need **full control** over routing, file structure, or build setup.
+* You’re working on a **purely client-side** or **canvas/WebGL app** (e.g., a graphics editor).
+* You aim for the **smallest possible bundle** and want no extra conventions.
+
+Nuxt adds structure and power, but that comes with some overhead. When you don’t need that structure, a leaner setup might be the better choice.
+
+---
+
 ## 🏁 Takeaways
 
 Nuxt adds **structure**, **scalability**, and **developer joy** to Vue 3.
@@ -161,9 +175,10 @@ It’s a smart choice if you:
 * Prefer conventions and integrated tooling
 
 ---
-
+x 
 ## 🔗 Further Resources
 
 * 📘 [nuxt.com/docs](https://nuxt.com/docs)
 * 🛠️ [nuxt.com/modules](https://nuxt.com/modules)
 * 🔥 [nitro.unjs.io](https://nitro.unjs.io)
+* 🧰 [unjs.io](https://unjs.io)
