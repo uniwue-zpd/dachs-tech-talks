@@ -1,5 +1,5 @@
 ---
-title: "Comparing UI Component Libraries for Vue/Nuxt"
+title: "Building REST APIs with Spring Boot"
 tags:
   - Java
   - Spring Boot
