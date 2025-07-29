@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from '~/components/ui/carousel'
 
-const { data: allTalks } = await useAsyncData('talk-list-past', () => {
+const { data: allTalks } = useAsyncData('talk-list-past', () => {
   return queryCollection('talks').order('date', 'DESC').all()
 })
 

@@ -5,7 +5,7 @@
     <div
         class="relative container md:max-w-6xl mx-auto bg-zinc-200 bg-[radial-gradient(ellipse_90%_90%_at_90%_-10%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_90%_90%_at_90%_-10%,rgba(120,119,198,0.3),rgba(255,255,255,0))] overflow-hidden rounded-3xl pt-12 pb-30 lg:pt-36 px-10"
     >
-      <div class="absolute inset-0 z-[5] bg-white/50 dark:bg-black/50 backdrop-blur-[1px] md:hidden" aria-hidden="true"></div>
+      <div class="absolute inset-0 z-[5] bg-white/50 dark:bg-black/50 backdrop-blur-[1px] md:hidden" aria-hidden="true"/>
 
       <div
           class="relative flex flex-col lg:w-2/3 justify-center mt-10 md:mt-0 z-10"

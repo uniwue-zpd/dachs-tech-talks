@@ -5,18 +5,12 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '~//components/ui/carousel'
+} from '~/components/ui/carousel'
 import UpcomingTalkCard from "~/components/talk/upcoming-talk-card.vue";
 
-const { data: allTalks } = await useAsyncData('upcoming-talk-list', () => {
-  return queryCollection('talks').order('date', 'ASC').all()
-})
-
-const now = new Date()
-
-const upcomingTalks = computed(() => {
-  if (!allTalks.value) return []
-  return allTalks.value.filter(talk => new Date(talk.date) >= now)
+const { data: upcomingTalks } = useAsyncData('upcoming-talk-list', () => {
+  const today = new Date();
+  return queryCollection('talks').where("date", ">", today.toISOString().slice(0, 10)).order('date', 'ASC').all()
 })
 </script>
 

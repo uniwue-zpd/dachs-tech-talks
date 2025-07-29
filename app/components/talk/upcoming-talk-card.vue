@@ -25,9 +25,11 @@ const categoryDetails = computed(() => getCategoryBySlug(props.talk.category))
 
 const fullDate = computed(() => {
   if (!props.talk.date) return null;
+
   const datePart = props.talk.date.split('T')[0];
   const timePart = props.talk.time || '10:30';
-  return new Date(`${datePart}T${timePart}:00Z`);
+
+  return new Date(`${datePart}T${timePart}:00`);
 });
 
 const formattedDateShort = computed(() => {
@@ -40,14 +42,16 @@ const formattedDateShort = computed(() => {
 })
 
 const formattedTime = computed(() => {
-  if (!fullDate.value) return ''
-  return new Intl.DateTimeFormat('en-US', {
+  if (!fullDate.value) return '';
+  const options = {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
-    timeZone: 'UTC'
-  }).format(fullDate.value) + ' UTC+2'
-})
+    timeZone: 'Europe/Berlin',
+    timeZoneName: 'short'
+  };
+  return new Intl.DateTimeFormat('de-DE', options).format(fullDate.value);
+});
 </script>
 
 <template>
