@@ -2,9 +2,9 @@
 import { Badge } from '~/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-vue-next'
-import { type Proposal } from '@/lib/proposals'
+import type { Proposal } from '@/lib/proposals'
 
-const props = defineProps({
+defineProps({
   data: {
     type: Object as () => Proposal,
     required: true,

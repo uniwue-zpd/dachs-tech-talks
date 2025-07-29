@@ -3,4 +3,5 @@ export interface Proposal {
     title: string;
     path: string;
     tags: string[];
+    body: Record<string, never>;
 }

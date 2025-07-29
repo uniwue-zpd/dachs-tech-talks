@@ -10,6 +10,7 @@ export interface Talk {
     category: string;
     speaker: string;
     tags: string[];
+    body: Record<string, never>;
 }
 
 export interface Category {
