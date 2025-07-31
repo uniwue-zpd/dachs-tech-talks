@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 const talkTemplate = `---
 title: "Your Talk Title"
 speaker: "Your Full Name"
-category: "framework-deep-dive" # Choose one: library-spotlight, framework-deep-dive, dev-tooling, recent-bugs-fixes, release-radar, behind-the-scenes, architecture-bits, misc
+category: "framework-spotlight" # Choose one: library-spotlight, framework-spotlight, dev-tooling, recent-bugs-fixes, release-radar, behind-the-scenes, architecture-bits, misc
 tags:
   - RelevantTag
   - AnotherTag

@@ -1,7 +1,7 @@
 ---
 title: "An Introduction to Nuxt"
 speaker: "Maximilian Nöth"
-category: "framework-deep-dive"
+category: "framework-spotlight"
 tags:
   - Nuxt
   - Vue
