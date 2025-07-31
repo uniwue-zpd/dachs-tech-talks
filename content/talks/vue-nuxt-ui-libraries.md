@@ -1,3 +1,16 @@
+---
+title: "Comparing UI Component Libraries for Vue/Nuxt"
+speaker: "Maximilian Nöth"
+category: "library-spotlight"
+tags:
+  - Nuxt
+  - Vue
+  - UI
+  - Frontend
+date: "2025-08-05"
+location: "00.003"
+---
+
 # **Comparing UI Component Libraries for Vue/Nuxt**
 
 A lightning talk on choosing the right UI component library for your next Vue.js or Nuxt.js project.
