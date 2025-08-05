@@ -25,6 +25,7 @@ Here are some other libraries worth mentioning:
 * **[Naive UI](https://www.naiveui.com/)**: Simple and elegant Vue 3 UI library
 * **[Element Plus](https://element-plus.org/)**: A continuation of Element UI for Vue 3
 * **[BootstrapVue](https://bootstrap-vue.org/)**: Vue version of Bootstrap components
+* **[daisyUI](https://daisyui.com/)**: A Tailwind CSS component library with pre-styled components
 
 This (opinionated) talk compares **three standout options**:
 
