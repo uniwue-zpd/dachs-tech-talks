@@ -154,5 +154,5 @@ The ecosystem is shifting towards **ownership of code**, **developer-first custo
 
 ## Addendum
 Some fancy component snippet collections to check out:
-** [vue-bits](https://vue-bits.dev/)
-** [Inspira UI](https://inspira-ui.com/)
+* [vue-bits](https://vue-bits.dev/)
+* [Inspira UI](https://inspira-ui.com/)
