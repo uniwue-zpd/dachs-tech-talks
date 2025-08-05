@@ -98,7 +98,7 @@ A modern, Reka UI- and Tailwind-based component framework created by the Nuxt te
 
 * Added via Nuxt module (or as a Vue plugin)
 * Auto-imported components
-* Configured and customizable via `app.config.ts`
+* Configured and customizable via `app.config.ts` and CSS variables
 
 ### ✅ Pros
 
