@@ -151,3 +151,8 @@ Each of these libraries fits a specific use case:
 * **Nuxt UI** is an ideal middle ground for Nuxt and Vue developers, balancing convention and flexibility.
 
 The ecosystem is shifting towards **ownership of code**, **developer-first customization**, and **interoperable component design**. Choose the approach that matches your needs for speed, style, and scale.
+
+## Addendum
+Some fancy component snippet collections to check out:
+** [vue-bits](https://vue-bits.dev/)
+** [Inspira UI](https://inspira-ui.com/)
