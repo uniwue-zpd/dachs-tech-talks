@@ -45,7 +45,7 @@ A mature, comprehensive UI library with theming support and many components, par
 * Pre-styled and fast to prototype
 * Offers both styled and unstyled modes
 * **Volt** (their newer offering) brings "copy-paste" components (akin to shadcn)
-* Form validation with [PrimeVue Forms]https://primevue.org/forms/) + good [3rd party FormKit support](https://github.com/sfxcode/formkit-primevuev)
+* Form validation with [PrimeVue Forms](https://primevue.org/forms/) + good [3rd party FormKit support](https://github.com/sfxcode/formkit-primevuev)
 
 ### ⚠️ Cons
 
