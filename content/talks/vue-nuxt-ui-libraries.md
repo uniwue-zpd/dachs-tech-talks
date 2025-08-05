@@ -45,6 +45,7 @@ A mature, comprehensive UI library with theming support and many components, par
 * Pre-styled and fast to prototype
 * Offers both styled and unstyled modes
 * **Volt** (their newer offering) brings "copy-paste" components (akin to shadcn)
+* Form validation with [PrimeVue Forms]https://primevue.org/forms/) + good [3rd party FormKit support](https://github.com/sfxcode/formkit-primevuev)
 
 ### ⚠️ Cons
 
@@ -76,6 +77,7 @@ A mature, comprehensive UI library with theming support and many components, par
 * You own the component code: full flexibility
 * Uses well-known libraries like **TanStack Table** for advanced features like DataTables, making it easier to customize and integrate
 * Easy to extend or restyle using Tailwind
+* Form validation with [VeeValidate](https://www.shadcn-vue.com/docs/components/form)
 
 ### ⚠️ Cons
 
@@ -105,6 +107,7 @@ A modern, Reka UI- and Tailwind-based component framework created by the Nuxt te
 * Centralized configuration
 * Great developer experience
 * Tailwind by default, customizable variants
+* [Form validation with a wide array of validation libraries (Zod, Yup, etc.)](https://ui.nuxt.com/components/form)
 
 ### ⚠️ Cons
 
