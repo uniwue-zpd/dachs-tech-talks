@@ -29,7 +29,7 @@ Here are some other libraries worth mentioning:
 This (opinionated) talk compares **three standout options**:
 
 * **[PrimeVue](https://primevue.org/) (+[Volt](https://volt.primevue.org/))**: a full-featured UI library with different customization approaches
-* **[shadcn-vue](https://www.shadcn-vue.com/)** (built on [Radix Vue](https://www.radix-vue.com/)): a modern UI toolkit based on headless logic and pre-styled components
+* **[shadcn-vue](https://www.shadcn-vue.com/)** (built on [Reka UI](https://www.radix-vue.com/)): a modern UI toolkit based on headless logic and pre-styled components
 * **[Nuxt UI](https://ui.nuxt.com/)**: Nuxt-native (now also Vue-compatible), developer-friendly, and Tailwind-based
 
 ---
@@ -58,16 +58,16 @@ A mature, comprehensive UI library with theming support and many components, par
 
 ---
 
-## **2. shadcn-vue + Radix Vue**
+## **2. shadcn-vue**
 
 > This is NOT a component library. It's a collection of re-usable components that you can copy and paste or use the CLI to add to your apps – shadcn-vue website
 
-**shadcn-vue** is not a traditional library. It's a CLI and pattern for adding pre-styled, customizable components to your project. These components are built on headless **Radix Vue** primitives and styled using Tailwind CSS. It is heavily inspired by the popular `shadcn/ui` for React.
+**shadcn-vue** is not a traditional library. It's a CLI and pattern for adding pre-styled, customizable components to your project. These components are built on headless **Reka UI** (formerly Radix Vue) primitives and styled using Tailwind CSS. It is heavily inspired by the popular `shadcn/ui` for React.
 
 ### 🧱 How it Works
 
 * CLI copies fully editable components into your project (manual copy-paste also works great)
-* Built on **Radix Vue**, which provides accessibility and state management logic
+* Built on **Reka UI**, which provides accessibility and state management logic
 * Components come with Tailwind-based default styles but are fully customizable
 
 ### ✅ Pros
@@ -89,7 +89,7 @@ A mature, comprehensive UI library with theming support and many components, par
 
 ## **3. Nuxt UI**
 
-A modern, Tailwind-based component framework created by the Nuxt team, designed to integrate seamlessly into Nuxt projects. **Now also works with standalone Vue apps**.
+A modern, Reka UI- and Tailwind-based component framework created by the Nuxt team, designed to integrate seamlessly into Nuxt projects. **Now also works with standalone Vue apps**.
 
 ### 🔧 How it Works
 
@@ -128,8 +128,8 @@ This gives teams the freedom to pick the best tools for each UI challenge—with
 
 ## **📊 Side-by-Side Comparison**
 
-| Feature           | PrimeVue (+Volt)                      | shadcn-vue + Radix Vue              | Nuxt UI                               |
-| ----------------- | ------------------------------------- | ----------------------------------- | ------------------------------------- |
+| Feature           | PrimeVue (+Volt)                      | shadcn-vue                          | Nuxt UI                               |
+| ----------------- | ------------------------------------- |-------------------------------------| ------------------------------------- |
 | **Philosophy**    | Pre-styled, batteries-included        | Copy-paste, pre-styled, code-owned  | Tailwind-based, Nuxt-native (Vue too) |
 | **Installation**  | npm install                           | CLI to copy files                   | Nuxt module or Vue plugin             |
 | **Customization** | Themes, unstyled mode                 | Tailwind variants or direct editing | `app.config.ts`, Tailwind             |
