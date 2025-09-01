@@ -25,9 +25,10 @@ export default defineNuxtConfig({
     'motion-v/nuxt',
     '@nuxtjs/color-mode',
     'nuxt-auth-utils',
+    '@nuxt/ui'
   ],
 
-  css: ['./app/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
   vite: {
     plugins: [
       tailwindcss(),

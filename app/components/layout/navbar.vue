@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/ui/button'
+import { Menu, CircleX } from 'lucide-vue-next'
+import { HyperText } from '~/components/ui/hyper-text'
+import AnimatedThemeToggle from '~/components/animated-theme-toggle/AnimatedThemeToggle.vue'
+
+const { y } = useWindowScroll()
+
+const isOpen = ref(false)
+
+interface MenuItem {
+  name: string
+  href: string
+}
+
+const menuItems: MenuItem[] = [
+  { name: 'Home', href: '/' },
+  { name: 'Talks', href: '/talks' },
+  { name: 'Proposals', href: '/proposals' },
+  { name: 'About', href: '/about' },
+]
+
+const { data: navigation } = await useAsyncData('navigation', () => queryCollectionNavigation('talks'))
+const { data: files } = await useAsyncData('search', () => queryCollectionSearchSections('talks'))
+
+const searchTerm = ref('')
+</script>
+
 <template>
   <header
       class="fixed top-0 left-0 inset-x-0 mx-auto z-50 transition-all duration-300 rounded-full"
@@ -16,6 +53,7 @@
         </NuxtLink>
 
         <div class="flex items-center gap-x-2 px-2">
+          <UContentSearchButton />
           <AnimatedThemeToggle />
           <Drawer v-model:open="isOpen">
             <DrawerTrigger as-child>
@@ -58,36 +96,14 @@
       </div>
     </div>
   </header>
+
+  <ClientOnly>
+    <LazyUContentSearch
+        v-model:search-term="searchTerm"
+        shortcut="meta_k"
+        :files="files"
+        :navigation="navigation"
+        :fuse="{ resultLimit: 42 }"
+    />
+  </ClientOnly>
 </template>
-
-<script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
-import { Menu, CircleX } from 'lucide-vue-next'
-import { HyperText } from '~/components/ui/hyper-text'
-import AnimatedThemeToggle from '~/components/animated-theme-toggle/AnimatedThemeToggle.vue'
-
-const { y } = useWindowScroll()
-
-const isOpen = ref(false)
-
-interface MenuItem {
-  name: string
-  href: string
-}
-
-const menuItems: MenuItem[] = [
-  { name: 'Home', href: '/' },
-  { name: 'Talks', href: '/talks' },
-  { name: 'Proposals', href: '/proposals' },
-  { name: 'About', href: '/about' },
-]
-</script>
