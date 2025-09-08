@@ -8,7 +8,7 @@ tags:
   - OpenAPI
   - Spring Boot
   - Monorepo
-date: "2025-07-19"
+date: "2025-09-23"
 location: "00.003"
 ---
 
