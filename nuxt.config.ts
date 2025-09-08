@@ -25,7 +25,8 @@ export default defineNuxtConfig({
     'motion-v/nuxt',
     '@nuxtjs/color-mode',
     'nuxt-auth-utils',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    '@nuxthub/core',
   ],
 
   css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
@@ -58,6 +59,10 @@ export default defineNuxtConfig({
      */
     componentDir: './app/components/ui'
   },
+
+    hub: {
+      database: true
+    },
 
   content: {
     experimental: { nativeSqlite: true },

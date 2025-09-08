@@ -1,5 +1,4 @@
 import { defineEventHandler, getRouterParam, createError } from 'h3'
-import { useStorage } from 'nitropack/runtime'
 
 export default defineEventHandler(async (event) => {
     const session = await getUserSession(event)
@@ -32,24 +31,54 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const storage = useStorage('data:votes')
-    const userVotesKey = `user_votes:${session.user.login}`
+    const { database } = hubDatabase()
 
-    const userVotes = (await storage.getItem<string[]>(userVotesKey)) || []
+    // Create tables if they don't exist
+    await database.exec(`
+        CREATE TABLE IF NOT EXISTS votes (
+            proposal_slug TEXT PRIMARY KEY,
+            vote_count INTEGER DEFAULT 0
+        )
+    `)
 
-    if (userVotes.includes(slug)) {
+    await database.exec(`
+        CREATE TABLE IF NOT EXISTS user_votes (
+            username TEXT,
+            proposal_slug TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (username, proposal_slug)
+        )
+    `)
+
+    // Check if user has already voted for this proposal
+    const existingVote = await database.prepare('SELECT 1 FROM user_votes WHERE username = ? AND proposal_slug = ?')
+        .bind(session.user.login, slug)
+        .first()
+
+    if (existingVote) {
         throw createError({
             statusCode: 409,
             statusMessage: 'Already voted',
         })
     }
 
-    const currentVotes = (await storage.getItem<number>(slug)) || 0
-    const newVotes = currentVotes + 1
-    await storage.setItem(slug, newVotes)
+    // Insert user vote
+    await database.prepare('INSERT INTO user_votes (username, proposal_slug) VALUES (?, ?)')
+        .bind(session.user.login, slug)
+        .run()
 
-    userVotes.push(slug)
-    await storage.setItem(userVotesKey, userVotes)
+    // Update vote count
+    await database.prepare(`
+        INSERT INTO votes (proposal_slug, vote_count) VALUES (?, 1)
+        ON CONFLICT(proposal_slug) DO UPDATE SET vote_count = vote_count + 1
+    `)
+        .bind(slug)
+        .run()
 
-    return { slug, votes: newVotes }
+    // Get current vote count
+    const result = await database.prepare('SELECT vote_count FROM votes WHERE proposal_slug = ?')
+        .bind(slug)
+        .first()
+
+    return { slug, votes: result?.vote_count || 1 }
 })

@@ -1,14 +1,21 @@
 import { defineEventHandler } from 'h3'
-import { useStorage } from 'nitropack/runtime'
 
 export default defineEventHandler(async () => {
-    const storage = useStorage('data:votes')
+    const { database } = hubDatabase()
 
-    const keys = await storage.getKeys()
+    await database.exec(`
+        CREATE TABLE IF NOT EXISTS votes (
+            proposal_slug TEXT PRIMARY KEY,
+            vote_count INTEGER DEFAULT 0
+        )
+    `)
 
-    const voteItems = await Promise.all(
-        keys.map(key => storage.getItem(key).then(value => ({ [key]: value || 0 })))
-    )
+    const results = await database.prepare('SELECT proposal_slug, vote_count FROM votes').all()
 
-    return Object.assign({}, ...voteItems)
+    const votes: Record<string, number> = {}
+    results.forEach(row => {
+        votes[row.proposal_slug] = row.vote_count
+    })
+
+    return votes
 })
