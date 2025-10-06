@@ -10,7 +10,7 @@ tags:
   - Spring Boot
   - Keycloak
 date: "2025-10-07"
-location: "00.003"
+location: "01.023"
 ---
 
 # Backend for Frontend (BFF) with Nuxt 4, Spring Boot & Keycloak
