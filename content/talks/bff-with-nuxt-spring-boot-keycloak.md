@@ -9,7 +9,7 @@ tags:
   - Nuxt
   - Spring Boot
   - Keycloak
-date: "2025-10-09"
+date: "2025-10-07"
 location: "00.003"
 ---
 
