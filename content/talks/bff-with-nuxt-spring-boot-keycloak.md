@@ -197,6 +197,32 @@ const processed = await processImage(file)
 return $fetch('/api/v1/upload', { method: 'POST', body: processed })
 ```
 
+### SSR Advantages
+
+**With SPA + PKCE:** Client-side auth means no authenticated SSR
+```typescript
+// Page loads, then client checks auth, then fetches data
+// User sees: blank → loading spinner → content
+<script setup>
+const { data } = await useFetch('/api/users')  // Client-side only
+</script>
+```
+
+**With BFF:** Server-side auth enables authenticated SSR
+```typescript
+// Server fetches data during SSR using session tokens
+// User sees: fully rendered content immediately
+<script setup>
+const { data } = await useFetch('/api/users')  // Works during SSR!
+</script>
+```
+
+**Benefits:**
+- **No loading states** - Data fetched server-side, page pre-rendered with content
+- **Faster perceived performance** - No client-side auth check → API call waterfall
+- **SEO for authenticated content** - Search engines see rendered content
+- **Better UX** - No flash of unauthenticated content or loading spinners
+
 ## Considerations
 
 **When BFF Makes Sense**
