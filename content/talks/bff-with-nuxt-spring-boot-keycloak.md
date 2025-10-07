@@ -27,40 +27,31 @@ location: "01.023"
 
 ## Why BFF with OAuth2/OIDC?
 
-### Three Approaches
+### Two Approaches
 
-**1. PKCE + SPA (in-memory tokens)**
-- Modern standard for SPAs, libraries like [oidc-spa](https://github.com/keycloakify/oidc-spa)
-- Tokens in browser memory (XSS vulnerable)
-- No authenticated SSR (server can't access in-memory tokens)
-- Simplest architecture, stateless
+**1. Client-Side with PKCE**
+- Modern standard for SPAs (e.g., [oidc-spa](https://github.com/keycloakify/oidc-spa))
+- While PKCE solves the security issue of public clients, pitfalls remain:
+  - Tokens in browser memory (still accessible to XSS)
+  - Memory cleared? User must re-login (tab close, refresh)
+  - No straight forward way to do authenticated SSR (server can't access in-memory tokens)
 
-**2. Server-Side OAuth + HTTP-Only Cookies (Hybrid)**
-- OAuth callback handled server-side, tokens in HTTP-only cookies
-- Enables authenticated SSR
-- Tokens visible in DevTools, sent with every request
-- If frontend calls backend directly, tokens exposed in Network tab
-
-**3. BFF - Tokens Never Leave Server**
+**2. BFF - Tokens Never Leave Server**
 ```typescript
 const response = await $fetch('/api/data')  // No auth logic needed
 ```
-- Tokens stay in encrypted server sessions (opaque session ID in cookie)
-- XSS cannot steal tokens
+- Tokens in encrypted server sessions (opaque session ID in cookie)
+- Tokens never exposed to browser (XSS-proof)
 - Confidential client with client secret
-- Authenticated SSR
+- Authenticated SSR + no re-login on refresh
 
-### Why BFF > Hybrid
+### Why BFF Wins
 
 **1. True Token Isolation**
-- Hybrid: Tokens in HTTP-only cookies (visible in DevTools, browser extensions can access)
-- BFF: Only opaque session ID in cookie, tokens never leave server
+- Only opaque session ID in cookie, tokens never leave server
+- Not visible in DevTools or accessible to browser extensions
 
-**2. No Network Exposure**
-- Hybrid: Tokens in Authorization headers (DevTools > Network tab)
-- BFF: Tokens only in server-to-backend calls (never in browser)
-
-**3. Network Isolation**
+**2. Network Isolation**
 ```yaml
 # Only BFF exposed to internet, backend stays internal
 spring-backend:
@@ -69,9 +60,9 @@ keycloak:
   networks: [internal]  # Admin API protected
 ```
 - **Critical for Keycloak Admin Client** - admin operations stay server-to-server in private network
-- Hybrid: Backend must be public for browser calls
+- Client-side approach: Backend must be public for browser calls
 
-**4. Additional Benefits**
+**3. Additional Benefits**
 - Backend URL abstraction (frontend doesn't know backend URLs)
 - Confidential client (can use client secret)
 - Centralized caching, rate limiting, monitoring
@@ -111,7 +102,7 @@ Browser                    Nuxt BFF                Spring Backend
 ### Key Implementation
 
 **1. OAuth Flow** - Store tokens in server session (using nuxt-auth-utils)
-```typescript
+```javascript
 async onSuccess(event, { tokens }) {
   await setUserSession(event, {
     secure: { accessToken, refreshToken, accessTokenExpires }
@@ -120,7 +111,7 @@ async onSuccess(event, { tokens }) {
 ```
 
 **2. API Proxy** - Auto-refresh & forward
-```typescript
+```javascript
 export default defineEventHandler(async (event) => {
   await refreshTokenIfExpired(event)  // 5min buffer
   const { accessToken } = await getUserSession(event)
@@ -132,7 +123,7 @@ export default defineEventHandler(async (event) => {
 ```
 
 **3. Config** - Internal Docker URLs
-```typescript
+```javascript
 runtimeConfig: {
   oauth: { keycloak: { clientSecret: 'xxx' } },
   apiBaseInternal: 'http://app:8080/api/v1'  // Not public!
@@ -142,7 +133,7 @@ runtimeConfig: {
 ### Beyond Proxying
 
 BFF enables orchestration, transformation, caching:
-```typescript
+```javascript
 // Aggregate multiple backends
 const [user, orders, preferences] = await Promise.all([...])
 
@@ -165,7 +156,7 @@ const cached = await useStorage('cache').getItem(key)
 ## When to Use BFF
 
 **Use BFF when:**
-- OAuth/OIDC with security requirements (finance, healthcare, enterprise)
+- OAuth/OIDC with security requirements
 - Multiple backend services to orchestrate
 - Need network isolation (admin APIs, internal services)
 - Compliance (PCI-DSS, HIPAA, SOC2)
@@ -177,7 +168,7 @@ const cached = await useStorage('cache').getItem(key)
 
 ## Takeaways
 
-1. **BFF solves OAuth in browser** - tokens never reach browser
+1. **BFF solves secure OAuth in browser** - tokens never reach browser
 2. **Network isolation** - keep Keycloak Admin & backends internal
 3. **Keep BFF thin** - proxy/orchestration only, not business logic
 4. **One BFF per client type** - web, mobile, desktop each get their own
@@ -188,3 +179,4 @@ const cached = await useStorage('cache').getItem(key)
 - [nuxt-auth-utils - Session & OAuth for Nuxt](https://github.com/atinux/nuxt-auth-utils)
 - [OAuth 2.0 for Browser-Based Apps (BCP)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps)
 - [OWASP - Token Storage Best Practices](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#local-storage)
+- [Phil Calcado - The Back-end for Front-end Pattern (BFF), 2015](https://philcalcado.com/2015/09/18/the_back_end_for_front_end_pattern_bff.html)
