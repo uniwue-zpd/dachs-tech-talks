@@ -3,9 +3,9 @@ title: "DACHS development process"
 speaker: "Herbert Baier"
 category: "behind-the-scenes"
 tags:
-  - process
-  - development
-  - cifs
+  - Process
+  - Development
+  - CIFS
   - Docker
 date: 2025-10-14
 time: "10:30"
