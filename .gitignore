@@ -9,6 +9,13 @@ dist
 # Node dependencies
 node_modules
 
+# Eclipse
+/.classpath
+/.project
+/.settings/
+/bin/
+/build/
+
 # Logs
 logs
 *.log
