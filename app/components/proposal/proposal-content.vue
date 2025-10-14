@@ -86,32 +86,34 @@ const handleUpvote = async () => {
     <div class="container max-w-3xl mx-auto mt-12 text-center">
       <div class="flex items-center justify-center gap-4">
         <div class="flex items-center gap-2 text-lg">
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                  variant="ghost"
-                  @click="handleUpvote">
-                <ThumbsUp
-                    class="h-6 w-6"
-                    :class="{'text-primary fill-primary': stats?.hasUpvoted }"
-                />
-                <span class="font-semibold">{{ stats?.count || 0 }}</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div v-if="voters?.length" class="flex flex-col space-y-2 p-2">
-                <div v-for="voter in voters" :key="voter" class="flex flex-row space-x-2 items-center">
-                  <Avatar>
-                    <AvatarImage :src="`https://github.com/${voter}.png`" :alt="`{voter}`" />
-                  </Avatar>
-                  <p>{{ voter }}</p>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                    variant="ghost"
+                    @click="handleUpvote">
+                  <ThumbsUp
+                      class="h-6 w-6"
+                      :class="{'text-primary fill-primary': stats?.hasUpvoted }"
+                  />
+                  <span class="font-semibold">{{ stats?.count || 0 }}</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div v-if="voters?.length" class="flex flex-col space-y-2 p-2">
+                  <div v-for="voter in voters" :key="voter" class="flex flex-row space-x-2 items-center">
+                    <Avatar>
+                      <AvatarImage :src="`https://github.com/${voter}.png`" :alt="`{voter}`" />
+                    </Avatar>
+                    <p>{{ voter }}</p>
+                  </div>
                 </div>
-              </div>
-              <div v-else>
-                <p>No votes yet.</p>
-              </div>
-            </TooltipContent>
-          </Tooltip>
+                <div v-else>
+                  <p>No votes yet.</p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
