@@ -12,6 +12,9 @@ import { Button } from '@/components/ui/button'
 import { Menu, CircleX } from 'lucide-vue-next'
 import { HyperText } from '~/components/ui/hyper-text'
 import AnimatedThemeToggle from '~/components/animated-theme-toggle/AnimatedThemeToggle.vue'
+import type { DropdownMenuItem } from '#ui/types'
+
+const { loggedIn, user, clear } = useUserSession()
 
 const { y } = useWindowScroll()
 
@@ -31,6 +34,26 @@ const menuItems: MenuItem[] = [
 
 const { data: navigation } = await useAsyncData('navigation', () => queryCollectionNavigation('talks'))
 const { data: files } = await useAsyncData('search', () => queryCollectionSearchSections('talks'))
+
+const userName = computed(() => {
+  return loggedIn ? user!.value.login : ''
+})
+
+const userItems = [
+  [
+    {
+      label: userName,
+      type: 'label'
+    }
+  ],
+  [
+    {
+      label: 'Logout',
+      icon: 'i-lucide-log-out',
+      onSelect: clear
+    }
+  ]
+] satisfies DropdownMenuItem[][]
 
 const searchTerm = ref('')
 </script>
@@ -55,6 +78,36 @@ const searchTerm = ref('')
         <div class="flex items-center gap-x-2 px-2">
           <UContentSearchButton />
           <AnimatedThemeToggle />
+          <UButton
+              v-if="!loggedIn"
+              to="/api/auth/github"
+              icon="i-simple-icons-github"
+              label="Login with GitHub"
+              color="neutral"
+              size="xs"
+              external
+          />
+          <div
+              v-else
+              class="flex flex-wrap -mx-2 sm:mx-0"
+          >
+            <UDropdownMenu
+                v-if="user"
+                :items="userItems"
+            >
+              <UButton
+                  color="neutral"
+                  variant="ghost"
+                  trailing-icon="i-lucide-chevron-down"
+              >
+                <UAvatar
+                    :src="`https://github.com/${user.login}.png`"
+                    :alt="user.login"
+                    size="2xs"
+                />
+              </UButton>
+            </UDropdownMenu>
+          </div>
           <Drawer v-model:open="isOpen">
             <DrawerTrigger as-child>
               <Button variant="ghost" size="icon">

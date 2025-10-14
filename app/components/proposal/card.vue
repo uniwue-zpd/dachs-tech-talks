@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { ThumbsUp } from 'lucide-vue-next'
-import { useUpvotes } from '~/composables/useUpvotes'
 
 interface Proposal {
   path: string
   title: string
   description: string
   tags: string[]
-  votes: number
 }
 
 const props = defineProps({
@@ -20,30 +16,36 @@ const props = defineProps({
   },
 })
 
-const { loggedIn, openInPopup } = useUserSession()
-const { hasUpvoted, addUpvote } = useUpvotes()
+const { loggedIn } = useUserSession()
 
-const localVotes = ref(props.proposal.votes || 0)
+const slug = computed(() => props.proposal.path.split('/').pop() || '')
+
+const { data: stats, refresh: refreshStats } = await useFetch(`/api/proposals/${slug.value}/stats`, {
+  key: `stats-${slug.value}`,
+})
+
+const { data: voters, refresh: refreshVoters } = await useFetch(`/api/proposals/${slug.value}/voters`, {
+  key: `voters-${slug.value}`,
+})
+
 const isVoting = ref(false)
 
 const handleUpvote = async () => {
-  if (isVoting.value || !loggedIn.value || hasUpvoted(props.proposal.path)) return
+  if (isVoting.value) return
+
+  if (!loggedIn.value) {
+    navigateTo('/api/auth/github', { external: true })
+    return
+  }
 
   isVoting.value = true
   try {
-    const slug = props.proposal.path.split('/').pop()
-    if (!slug) {
-      throw new Error(`Could not derive slug from path: ${props.proposal.path}`)
-    }
-
-    const result = await $fetch(`/api/proposals/${slug}/vote`, {
+    await $fetch(`/api/proposals/${slug.value}/upvote`, {
       method: 'POST',
     })
 
-    if (result && typeof result.votes === 'number') {
-      localVotes.value = result.votes
-      addUpvote(props.proposal.path)
-    }
+    await refreshStats()
+    await refreshVoters()
   } catch (error) {
     console.error('Failed to upvote:', error)
   } finally {
@@ -73,27 +75,31 @@ const handleUpvote = async () => {
 
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-1 text-sm">
-          <ThumbsUp class="h-4 w-4" :class="{'text-primary fill-primary': hasUpvoted(proposal.path) }" />
-          <span class="font-semibold">{{ localVotes }}</span>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="ghost" size="sm" :disabled="isVoting" @click="handleUpvote">
+                <ThumbsUp
+                    class="h-4 w-4"
+                    :class="{'text-primary fill-primary': stats?.hasUpvoted }"
+                />
+                <span class="font-semibold">{{ stats?.count || 0 }}</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div v-if="voters?.length" class="flex flex-col space-y-2 p-2">
+                <div v-for="voter in voters" :key="voter" class="flex flex-row space-x-2 items-center">
+                  <Avatar>
+                    <AvatarImage :src="`https://github.com/${voter}.png`" :alt="`{voter}`" />
+                  </Avatar>
+                  <p>{{ voter }}</p>
+                </div>
+              </div>
+              <div v-else>
+                <p>No votes yet.</p>
+              </div>
+            </TooltipContent>
+          </Tooltip>
         </div>
-        <Button
-            v-if="!loggedIn"
-            variant="outline"
-            size="sm"
-            @click="openInPopup('/auth/github')"
-        >
-          Login to Vote
-        </Button>
-        <Button
-            v-else
-            variant="ghost"
-            size="sm"
-            class="flex items-center gap-2"
-            :disabled="isVoting || hasUpvoted(proposal.path)"
-            @click="handleUpvote"
-        >
-          {{ hasUpvoted(proposal.path) ? 'Upvoted' : 'Upvote' }}
-        </Button>
       </div>
     </div>
   </div>

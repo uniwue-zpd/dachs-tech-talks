@@ -14,7 +14,11 @@ const route = useRoute()
 const router = useRouter()
 
 const { data: allProposals } = await useAsyncData('proposal-list', () => queryCollection('proposals').all())
-const { data: votes } = await useFetch('/api/proposals/votes', { key: 'proposal-votes' })
+
+// Fetch all proposal stats in a single call (you'll need to create this endpoint)
+const { data: allStats } = await useFetch('/api/proposals/all-stats', {
+  key: 'all-proposal-stats'
+})
 
 const getTagsFromUrl = () => route.query.tags ? route.query.tags.toString().split(',').filter(Boolean) : []
 const getSortFromUrl = () => route.query.sort === 'top' ? 'top' : 'newest'
@@ -26,10 +30,11 @@ const sortOrder = ref<'newest' | 'top'>(getSortFromUrl())
 const proposalsWithVotes = computed(() => {
   if (!allProposals.value) return []
   return allProposals.value.map(proposal => {
-    const slug = proposal.path.split('/').pop() || '';
+    const slug = proposal.path.split('/').pop() || ''
+    const stats = allStats.value?.[slug]
     return {
       ...proposal,
-      votes: votes.value?.[slug] || 0,
+      votes: stats?.count || 0,
     }
   })
 })
@@ -59,8 +64,6 @@ const filteredAndSortedProposals = computed(() => {
 
   if (sortOrder.value === 'top') {
     result.sort((a, b) => b.votes - a.votes)
-  } else {
-
   }
 
   return result
@@ -76,8 +79,9 @@ watch([selectedTags, sortOrder], ([tags, sort]) => {
 }, { deep: true })
 
 const toggleSelection = (arr, item) => {
-  const index = arr.indexOf(item);
-  if (index > -1) arr.splice(index, 1); else arr.push(item);
+  const index = arr.indexOf(item)
+  if (index > -1) arr.splice(index, 1)
+  else arr.push(item)
 }
 </script>
 
@@ -101,27 +105,45 @@ const toggleSelection = (arr, item) => {
           </SelectContent>
         </Select>
         <Popover>
-          <PopoverTrigger as-child><Button variant="outline" size="sm" class="h-9 border-dashed w-full md:w-auto">
-            <PlusCircle class="mr-2 h-4 w-4" />Tags
-            <template v-if="selectedTags.length > 0"><Separator orientation="vertical" class="mx-2 h-4" />
-              <Badge variant="secondary" class="rounded-sm px-1 font-normal">{{ selectedTags.length }}</Badge>
-            </template>
-          </Button></PopoverTrigger>
-          <PopoverContent class="w-[250px] p-0" align="end"><Command>
-            <CommandInput placeholder="Filter tags..." />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                <CommandItem v-for="[lowerTag, details] in uniqueTags" :key="lowerTag" :value="lowerTag" @select="() => toggleSelection(selectedTags, lowerTag)">
-                  <div :class="cn('mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary', selectedTags.includes(lowerTag) ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible')"><Check class="h-4 w-4" /></div>
-                  <span class="capitalize">{{ details.display }}</span><span class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">{{ details.count }}</span>
-                </CommandItem>
-              </CommandGroup>
-              <template v-if="selectedTags.length > 0"><CommandSeparator /><CommandGroup>
-                <CommandItem class="justify-center text-center" @select="selectedTags = []">Clear filters</CommandItem>
-              </CommandGroup></template>
-            </CommandList>
-          </Command></PopoverContent>
+          <PopoverTrigger as-child>
+            <Button variant="outline" size="sm" class="h-9 border-dashed w-full md:w-auto">
+              <PlusCircle class="mr-2 h-4 w-4" />Tags
+              <template v-if="selectedTags.length > 0">
+                <Separator orientation="vertical" class="mx-2 h-4" />
+                <Badge variant="secondary" class="rounded-sm px-1 font-normal">{{ selectedTags.length }}</Badge>
+              </template>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent class="w-[250px] p-0" align="end">
+            <Command>
+              <CommandInput placeholder="Filter tags..." />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  <CommandItem
+                      v-for="[lowerTag, details] in uniqueTags"
+                      :key="lowerTag"
+                      :value="lowerTag"
+                      @select="() => toggleSelection(selectedTags, lowerTag)"
+                  >
+                    <div :class="cn('mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary', selectedTags.includes(lowerTag) ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible')">
+                      <Check class="h-4 w-4" />
+                    </div>
+                    <span class="capitalize">{{ details.display }}</span>
+                    <span class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">{{ details.count }}</span>
+                  </CommandItem>
+                </CommandGroup>
+                <template v-if="selectedTags.length > 0">
+                  <CommandSeparator />
+                  <CommandGroup>
+                    <CommandItem class="justify-center text-center" @select="selectedTags = []">
+                      Clear filters
+                    </CommandItem>
+                  </CommandGroup>
+                </template>
+              </CommandList>
+            </Command>
+          </PopoverContent>
         </Popover>
       </div>
     </div>

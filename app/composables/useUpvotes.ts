@@ -20,8 +20,13 @@ export function useUpvotes() {
             if (storedOrgs) {
                 userOrgs.value = JSON.parse(storedOrgs)
             } else {
-                userOrgs.value = await $fetch('/api/auth/github/orgs')
-                sessionStorage.setItem(USER_ORGS_KEY, JSON.stringify(userOrgs.value))
+                try {
+                    userOrgs.value = await $fetch('/api/auth/github/orgs')
+                    sessionStorage.setItem(USER_ORGS_KEY, JSON.stringify(userOrgs.value))
+                } catch (error) {
+                    console.warn('Failed to fetch user orgs:', error)
+                    userOrgs.value = []
+                }
             }
             isOrgMember.value = userOrgs.value.includes('uniwue-zpd')
         }

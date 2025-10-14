@@ -61,7 +61,8 @@ export default defineNuxtConfig({
   },
 
     hub: {
-      database: true
+      database: true,
+      tasks: true
     },
 
   content: {
