@@ -108,7 +108,7 @@ const searchTerm = ref('')
               </UButton>
             </UDropdownMenu>
           </div>
-          <Drawer v-model:open="isOpen">
+          <Drawer v-model:open="isOpen" direction="right" should-scale-background set-background-color-on-scale>
             <DrawerTrigger as-child>
               <Button variant="ghost" size="icon">
                 <Menu class="h-6 w-6" />
@@ -121,7 +121,12 @@ const searchTerm = ref('')
                   <div class="flex justify-between items-center">
                     <NuxtLink class="flex items-center" to="/" @click="isOpen = false">
                       <LayoutLogo height="48" width="48" />
-                      <span class="text-lg font-bold">DACHS Tech Talks</span>
+                      <HyperText
+                          text="DACHS Tech Talks"
+                          class="hidden text-lg font-bold hover:cursor-pointer sm:block"
+                          :duration="800"
+                          :animate-on-load="true"
+                      />
                     </NuxtLink>
                     <DrawerClose as-child>
                       <Button variant="ghost" size="icon">
@@ -132,12 +137,12 @@ const searchTerm = ref('')
                   </div>
                 </DrawerTitle>
               </DrawerHeader>
-              <nav class="p-4">
+              <nav>
                 <NuxtLink
                     v-for="item in menuItems"
                     :key="item.name"
                     :to="item.href"
-                    class="flex items-center gap-x-2 p-4 mx-auto rounded-md text-2xl hover:bg-muted"
+                    class="flex items-center gap-x-2 p-4 mx-auto rounded-md text-6xl hover:bg-muted"
                     @click="isOpen = false"
                 >
                   <span>{{ item.name }}</span>
