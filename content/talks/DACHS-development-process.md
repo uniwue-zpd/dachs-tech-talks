@@ -8,6 +8,7 @@ tags:
   - CIFS
   - Docker
 date: 2025-11-25
+description: "How to manage projects and Docker on the incubator server from your local machine without server access."
 time: "10:30"
 location: "00.003"
 ---
