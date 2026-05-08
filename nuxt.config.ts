@@ -26,7 +26,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-auth-utils',
     '@nuxt/ui',
-    '@nuxthub/core',
   ],
 
   css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
