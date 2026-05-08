@@ -6,7 +6,8 @@ tags:
   - OpenStreetMap
   - PMTiles
   - MapLibre
-date: 2026-06-23
+description: "Self-hosted interactive maps with Protomaps, PMTiles, MapLibre GL JS, and Nuxt"
+date: "2026-06-23"
 time: "14:00"
 ---
 
